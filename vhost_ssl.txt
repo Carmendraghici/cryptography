@@ -1,0 +1,26 @@
+<VirtualHost *:443>
+    ServerName test.com
+    DocumentRoot "/Applications/XAMPP/xamppfiles/htdocs/test"
+    SSLEngine on
+    SSLCertificateFile "/Applications/XAMPP/xamppfiles/etc/ssl.crt/server.crt"
+    SSLCertificateKeyFile "/Applications/XAMPP/xamppfiles/etc/ssl.key/server.key"
+    <Directory "/Applications/XAMPP/xamppfiles/htdocs/test">
+        Options Indexes FollowSymLinks Includes ExecCGI
+        AllowOverride All
+        Require all granted
+    </Directory>
+	<Location /server-status>
+		SetHandler server-status
+		Order Deny,Allow
+		Deny from all
+		Allow from localhost
+	</Location>
+	<location /server-info>
+		SetHandler server-info
+		Order deny,allow
+		Deny from all
+		Allow from 127.0.0.1
+	</location>
+    ErrorLog "logs/test.local-error_log"
+	
+</VirtualHost>

@@ -1,0 +1,16 @@
+<VirtualHost *:80>
+    ServerName larashop.ro
+    DocumentRoot "/Applications/XAMPP/xamppfiles/htdocs/shoplaravel/public"
+    <Directory "/Applications/XAMPP/xamppfiles/htdocs/shoplaravel/public">
+        Options Indexes FollowSymLinks Includes ExecCGI
+        AllowOverride All
+        Require all granted
+    </Directory>
+    ErrorLog "logs/site-error_log"
+	ErrorDocument 404 /missing.html
+	<Files "missing.html">
+        <If "-z %{ENV:REDIRECT_STATUS}">
+            RedirectMatch 404 ^/missing.html$
+        </If>
+    </Files>
+</VirtualHost>

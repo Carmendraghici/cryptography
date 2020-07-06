@@ -1,0 +1,64 @@
+openssl version -a
+openssl list-standard-commands
+openssl list-cipher-commands
+
+
+//Aplicatia3
+//criptare
+openssl enc -aes-256-cbc -in salut.txt -out encrypted.bin
+
+//decriptare
+openssl enc -aes-256-cbc -d -in encrypted.bin -pass pass:secret
+//sau 
+openssl enc -aes-256-cbc -d -in encrypted.bin -pass pass:secret -out hello.txt
+
+//Aplicatia4
+Metoda 1
+//pas 1 generam cheia privata
+
+openssl genrsa -out key.pem 1024
+// informatii / detalii despre cheia privata
+openssl rsa -in key.pem -text -noout
+
+//pas 2 criptam cheia privata cu algoritmul simetric DES3 cu parola secret
+openssl rsa -in key.pem -des3 -out enc-key.pem
+// informatii / detalii despre cheia privata criptata - avem nevoie de parola
+openssl rsa -in enc-key.pem -text -noout
+
+//pas 3 extragem cheia publica din cheia privata
+openssl rsa -in key.pem -pubout -out pub-key.pem
+
+
+Metoda 2 
+//o cheie mai complexa
+openssl genrsa -aes256 -out private.key 8912
+openssl rsa -in private.key -pubout -out public.key
+
+
+//Aplicatia5
+
+Metoda 1
+//criptare cu cheia publica
+
+openssl pkeyutl -encrypt -in salut.txt -inkey enc-key.pem -out salut_criptat.txt
+// ar trebui sa mearga si mentionand cheia publica
+// openssl pkeyutl -encrypt -in salut.txt -inkey pub-key.pem -pubin -out salut_criptat.txt
+
+// decriptare cu cheia privata
+openssl pkeyutl -decrypt -in salut_criptat.txt -inkey enc-key.pem -out salut_rsa.txt
+
+Metoda 2
+//criptare cu cheia publica
+openssl rsautl -encrypt -pubin -inkey public.key -in salut.txt -out salut2_criptat.txt
+
+// decriptare cu cheia privata
+openssl rsautl -decrypt -inkey private.key -in salut2_criptat.txt -out salut2.txt
+
+
+//Aplicatia6
+
+// fisierele de pe github 
+Pentru MAC
+https://blog.kylehuynh.com/enable-ssl-in-apache-of-xampp-mac-osx/
+
+
